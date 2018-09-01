@@ -4,6 +4,7 @@ from flask import Flask,render_template,request
 import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
+import numpy as np
 
 app=Flask("dev")
 
@@ -29,4 +30,8 @@ def show():
     plt.ylabel("Population in billions")
     plt.title("Year vs Population")
     plt.savefig(img)
-    return render_template("submit.html",img=base64.b64encode(img.getvalue()).decode())
+    np_pop=np.array(pop)
+    mean=np.mean(np_pop)
+    median=np.median(np_pop)
+    stdev=np.std(np_pop)
+    return render_template("submit.html",img=base64.b64encode(img.getvalue()).decode(),mean=mean,median=median,stdev=stdev)
